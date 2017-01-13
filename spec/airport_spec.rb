@@ -3,7 +3,7 @@ require "airport"
 
 describe Airport do
 
-  let(:airport) { double :airport, sunny: true}
+  let(:airport) { double :airport, sunny: true, landed: plane, departure: plane}
   let(:weather) { double :weather, sunshine: true }
   let(:plane) { double :plane }
 
@@ -13,26 +13,27 @@ describe Airport do
     describe " when weather is fine" do
 
       it 'Confirms a plane has landed' do
-        allow(weather).to receive(:sunshine).and_return(true)
-        subject.landed(plane)
-        expect(airport.sunny).to eq (weather.sunshine)
+        allow(airport).to receive(:sunny).and_return(true)
+        airport.landed(plane)
+        #expect(airport.sunny).to eq (weather.sunshine)
       end
 
 
       it { is_expected.to respond_to :departure}
 
       it 'Plane departs from airport' do
-        allow(weather).to receive(:sunshine).and_return(true)
-        subject.departure
-        expect(airport.sunny).to eq true
+        allow(airport).to receive(:sunny).and_return(true)
+        airport.departure
+      #  expect(airport.sunny).to eq true
       end
     end
 
   it { is_expected.to respond_to :full?}
 
   it "Gives an error when airport is full" do
-    Airport::DEFAULT_CAPACITY.times { subject.landed(plane) }
-    expect{subject.landed(plane)}.to raise_error 'Airport full'
+    allow(airport).to receive(:sunny).and_return(true)
+    Airport::DEFAULT_CAPACITY.times { airport.landed(plane) }
+    expect{airport.landed(plane)}.to raise_error 'Airport full'
   end
 
     it 'Allow user to set capacity of airport' do
@@ -47,8 +48,9 @@ describe Airport do
    end
 
 
-  # it 'prevents planes from departing if stormy' do
-  #   expect {subject.sunny}.to raise_error 'Unable to depart due to stormy weather'
-  # end
+  #  it 'prevents planes from departing if stormy' do
+  #   allow(airport).to receive(:sunny).and_return(false)
+  #   expect {airport.sunny}.to raise_error "Unable to depart due to stormy weather"
+  #  end
 
 end
