@@ -8,7 +8,7 @@ class Airport
   attr_accessor :sunny, :arrivals, :capacity
 
   def initialize(capacity = DEFAULT_CAPACITY)
-    @sunny = Weather.new.sunshine
+    @sunny = Weather.new
     @arrivals = []
     @capacity = capacity
   end

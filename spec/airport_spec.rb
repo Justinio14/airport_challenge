@@ -3,26 +3,30 @@ require "airport"
 
 describe Airport do
 
-  let(:weather) { double :weather, :sunshine= => true, sunshine: true}
+  let(:airport) { double :airport, sunny: true}
+  let(:weather) { double :weather, sunshine: true }
   let(:plane) { double :plane }
+
 
   it { is_expected.to respond_to(:landed).with(1).argument }
 
-  it 'Confirms a plane has landed' do
-    allow(weather).to receive(:sunshine).and_return(true)
-    subject.landed(plane)
-    expect(subject.sunny).to eq true
-  end
+    describe " when weather is fine" do
+
+      it 'Confirms a plane has landed' do
+        allow(weather).to receive(:sunshine).and_return(true)
+        subject.landed(plane)
+        expect(airport.sunny).to eq (weather.sunshine)
+      end
 
 
-  it { is_expected.to respond_to :departure}
+      it { is_expected.to respond_to :departure}
 
-  it 'Plane departs from airport' do
-  allow(weather).to receive(:sunshine).and_return(true)
-  subject.departure
-  expect(subject.sunny).to eq true
-
-  end
+      it 'Plane departs from airport' do
+        allow(weather).to receive(:sunshine).and_return(true)
+        subject.departure
+        expect(airport.sunny).to eq true
+      end
+    end
 
   it { is_expected.to respond_to :full?}
 
