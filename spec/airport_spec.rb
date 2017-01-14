@@ -3,7 +3,7 @@ require "airport"
 
 describe Airport do
 
-  let(:airport) { double :airport, sunny: true, landed: plane, departure: plane}
+  subject(:airport) { described_class.new} # sunny: true, landed: plane, departure: plane}
   let(:weather) { double :weather, sunshine: true }
   let(:plane) { double :plane }
 
@@ -47,10 +47,15 @@ describe Airport do
       expect(airport.capacity).to eq Airport::DEFAULT_CAPACITY
    end
 
+   
+  it 'prevents planes from departing if stormy' do
+    allow(airport).to receive(:sunny).and_return(false)
+    expect{airport.departure}.to raise_error "Unable to depart due to stormy weather"
+   end
 
-  #  it 'prevents planes from departing if stormy' do
-  #   allow(airport).to receive(:sunny).and_return(false)
-  #   expect {airport.sunny}.to raise_error "Unable to depart due to stormy weather"
-  #  end
+   it 'prevents planes from landing if stormy' do
+     allow(airport).to receive(:sunny).and_return(false)
+     expect{airport.landed(plane)}.to raise_error "Unable to land due to stormy weather"
+    end
 
 end
